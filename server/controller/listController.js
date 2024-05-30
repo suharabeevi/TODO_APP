@@ -16,5 +16,44 @@ module.exports={
             console.log(error);
             res.status(500).json({ message:error.message });
           }
+    },
+
+    EditTask:async(req,res)=>{
+        
+            try {
+              console.log(req.body,"hii");
+              const { task } = req.body;
+              console.log(req.params.taskId)
+              const list = await ListModel.findByIdAndUpdate(req.params.taskId, { title:task },{new:true});
+              list.save().then(() => res.status(200).json({ message: "Task Updated" ,UpdtaedTask:list}));
+            } catch (error) {
+                console.log(error);
+                res.status(500).json({ message:error.message });
+            }
+          
+    },
+
+    DeleteTask: async(req,res)=>{
+        try {
+            const taskId = req.params.taskId;
+
+            // Find and delete the task
+            const task = await ListModel.findByIdAndDelete(taskId);
+            if (!task) {
+                return res.status(404).json({ message: "Task not found." });
+            }
+    
+            // Remove the task reference from all users' lists
+            await UserModel.updateMany(
+                { list: taskId },
+                { $pull: { list: taskId } }
+            );
+    
+            res.status(200).json({ message: "Task Deleted" });
+          
+          } catch (error) {
+            console.log(error);
+                res.status(500).json({ message:error.message });
+          }
     }
 }
