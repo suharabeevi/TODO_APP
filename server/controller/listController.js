@@ -55,5 +55,31 @@ module.exports={
             console.log(error);
                 res.status(500).json({ message:error.message });
           }
-    }
+    },
+     getAllTask : async (req, res) => {
+      try {
+        const { UserId } = req.params;
+    
+        // Check if UserId is provided
+        if (!UserId) {
+          return res.status(400).json({ message: "UserId is required" });
+        }
+    
+        // Fetch the list of tasks for the given UserId
+        const list = await ListModel.find({ user: UserId }).sort({ createdAt: -1 });
+    
+        // If list is not empty, return it; otherwise, return a "No tasks found" message
+        if (list.length !== 0) {
+          res.status(200).json({ list });
+        } else {
+          res.status(200).json({ message: "No tasks found" });
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+      }
+    },
+    
+   
+    
 }
