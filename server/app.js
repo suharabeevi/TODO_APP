@@ -17,8 +17,6 @@ DbConnection()
 app.use('/api/user',userRoutes)
 app.use('/api/v2',ListRoutes)
 
-
-
 const Port = process.env.PORT || 6060
 app.listen(Port,()=>{
     console.log(`server Listening on ${Port}...`);
