@@ -47,6 +47,9 @@ function Login() {
     try {
       const { data, token } = await login(loginData);
       console.log(data, token);
+      console.log(data.data._id);
+      localStorage.setItem('userId', data.data._id);
+      localStorage.setItem('name', data.data.username);
       toast.success("Login successful!", { onClose: () => navigate("/todo") });
     } catch (error) {
       setError("Invalid email or password");

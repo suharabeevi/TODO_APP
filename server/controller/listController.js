@@ -3,8 +3,10 @@ const UserModel = require('../models/userModel')
 module.exports={
     AddTask: async(req,res)=>{
         try {
-            console.log(req.body);
-            const { title, id } = req.body;
+            console.log(req.userId,req.body,"hhhhhhhhhhhhhh");
+            const id = req.userId
+            const { title } = req.body;
+            
             const existingUser = await UserModel.findById(id);
             if (existingUser) {
               const list = new ListModel({ title, user: existingUser });
@@ -22,9 +24,9 @@ module.exports={
         
             try {
               console.log(req.body,"hii");
-              const { task } = req.body;
+              
               console.log(req.params.taskId)
-              const list = await ListModel.findByIdAndUpdate(req.params.taskId, { title:task },{new:true});
+              const list = await ListModel.findByIdAndUpdate(req.body.id,{title:req.body.title},{new:true});
               list.save().then(() => res.status(200).json({ message: "Task Updated" ,UpdtaedTask:list}));
             } catch (error) {
                 console.log(error);
@@ -72,7 +74,7 @@ module.exports={
         if (list.length !== 0) {
           res.status(200).json({ list });
         } else {
-          res.status(200).json({ message: "No tasks found" });
+          res.status(200).json({list:[] });
         }
       } catch (error) {
         console.log(error);

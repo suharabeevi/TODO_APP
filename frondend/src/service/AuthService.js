@@ -8,3 +8,4 @@ export const signup= async (body) => await instance.post(`/user/signup`, body);
 
 
 export const login = async (body) => await instance.post(`/user/login`, body);
+

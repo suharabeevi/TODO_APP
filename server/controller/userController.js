@@ -23,10 +23,10 @@ module.exports = {
     },
     UserLoginController:async(req,res)=>{
         try{
-          console.log(req.body);
+          
             const  {email,password} = req.body
             const user = await usermodel.findOne({ email: email });
-            console.log(user);
+            
             if (!user) {
               return res.status(400).json({ message: "User not found." });
             }
@@ -34,14 +34,13 @@ module.exports = {
                 password,
               user.password
             );
-            console.log(isPasswordCorrect);
+            
             if (!isPasswordCorrect) {
               return res
                 .status(400)
                 .json({ message: "Incorrect password. Please try again." });
             }
             const token = user.generateAuthToken()
-            console.log(token);
             res.status(201).json({ data:user, message: "Loggin Successfully", token:token });
         }catch (error) {
             console.log(error);

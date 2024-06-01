@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
+import { addTask } from '../../service/TodoService';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faUser  } from "@fortawesome/free-solid-svg-icons";
 
-export const TodoForm = ({ addTodo }) => {
+export const TodoForm = ({ addTodo, handleGetUserTodos }) => {
   const [value, setValue] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (value) {
-      await addTodo(value);
+      await addTask({
+        title:value
+      });
       setValue('');
     }
+    handleGetUserTodos()
   };
 
   return (
+    
+
+
+
+
+
+    
     <form onSubmit={handleSubmit} className="flex mb-6">
       <div className="flex-1">
         <input
@@ -28,5 +41,6 @@ export const TodoForm = ({ addTodo }) => {
         </button>
       </div>
     </form>
+  
   );
 };
